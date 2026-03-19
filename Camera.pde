@@ -21,14 +21,14 @@ class Camera
 
     camX = 0;
     camY = 0;
-    camZ = 200;
+    camZ = 500;
     yaw = 180;
     pitch = 2.4;
     velocityZ = 0;
     gravity = 1.2;
     jumpStrength = 20;
-    spd = 7;
-    FLOOR_z = 30;
+    spd = 5;
+    FLOOR_z = -100;
     TRAP_MOUSE = true;
   }
 
@@ -36,8 +36,20 @@ class Camera
   void handleCamera ()
   {
 
+    float currentGround = map1.getGroundHeight(camX, camY);
+    float targetZ = currentGround + 75;
+    
+    
+    
+    
     velocityZ -= gravity;
     camZ += velocityZ;
+    
+    if (camZ <= currentGround + 75) {
+      
+      camZ = lerp(camZ, targetZ, 0.4);
+      velocityZ = 0;
+    }
 
     if (camZ <= FLOOR_z)
     {
@@ -78,10 +90,11 @@ class Camera
       camX += cos (yaw + HALF_PI) * spd;
       camY += sin (yaw + HALF_PI) * spd;
     }
-    if (sp && camZ <= FLOOR_z + 0.1)
+    if (sp && camZ <= targetZ + 1)
     {
       velocityZ = jumpStrength;
     }
+   
 
     if (sh)
       camZ -= spd;
@@ -95,7 +108,7 @@ class Camera
     camera (camX, camY, camZ, lookX, lookY, lookZ, // camera funtion
       0, 0, -1);
 
-    perspective (PI / 3, float (width) / height, 1,
+    perspective (radians(100), float (width) / height, 1,
       1000000); // adjust clipping distance
 
     lights (); // lights
