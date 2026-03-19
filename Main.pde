@@ -4,14 +4,15 @@ GLWindow r;
 Map map1;
 Camera playerCamera;
 int FPS = 30;
-
+int currentSeed = -1;
 void setup() {
 
   size(1920, 1200, P3D);
-  noiseSeed(-1);
+  reloadWorld();
+  
   frameRate(FPS);
   playerCamera = new Camera();
-  map1 = new Map(4000, 4000);
+  map1 = new Map(5000, 5000);
   windowTitle("FoodChain3D");
   r = (GLWindow) surface.getNative();
   r.confinePointer(true);
@@ -25,6 +26,17 @@ void setup() {
   println(width);
   println(height);
 }
+
+
+void reloadWorld() {
+  noiseSeed(currentSeed); 
+  map1 = new Map(5000, 5000); // Re-creates the map with the new seed 
+  println("World Reloaded with Seed: " + currentSeed);
+}
+
+
+
+
 
 void draw() {
   background(128, 221, 255);
@@ -41,3 +53,4 @@ void draw() {
   noLights();
   drawUI();
 }
+
