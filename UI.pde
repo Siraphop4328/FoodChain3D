@@ -27,5 +27,9 @@ void drawCoord() {
   int displayYaw = (int)degrees(playerCamera.yaw)% 360;
   if (displayYaw < 0) displayYaw += 360;
   text("Pitch-Yaw: " + (int)degrees(-playerCamera.pitch) + ", " + displayYaw, 20, 80);
+  text("'V'  to unlock mouse", 20, 130);
+  text("Current Seed: " + currentSeed, 20, 160);
+  text("Press 'N' for New Seed", 20, 190);
+  text("Press 'R' to Reload", 20, 220);
   hint(ENABLE_DEPTH_TEST);
 }
