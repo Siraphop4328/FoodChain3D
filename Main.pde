@@ -3,11 +3,11 @@ GLWindow r;
 
 Map map1;
 Camera playerCamera;
-int FPS = 45;
+int FPS = 30;
 
 void setup() {
 
-  size(1980, 1200, P3D);
+  size(1920, 1200, P3D);
   frameRate(FPS);
   playerCamera = new Camera();
   map1 = new Map(10, 10);
@@ -15,6 +15,14 @@ void setup() {
   r = (GLWindow) surface.getNative();
   r.confinePointer(true);
   r.setPointerVisible(false);
+
+  int x = (displayWidth - width) / 2;
+  int y = (displayHeight - height) / 2;
+  surface.setLocation(x, y);
+  println(displayWidth);
+  println(displayHeight);
+  println(width);
+  println(height);
 }
 
 void draw() {
