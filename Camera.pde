@@ -10,8 +10,9 @@ class Camera
   float gravity;
   float jumpStrength;
   float spd;
+  float sprintMult;
   float FLOOR_z;
-
+  float smoothedGroundZ;
 
   boolean w, a, s, d, sp, sh;
   boolean TRAP_MOUSE;
@@ -26,12 +27,13 @@ class Camera
     yaw = 180;
     pitch = 2.4;
     velocityZ = 0;
-    gravity = 1.2;
-    jumpStrength = 20;
+    gravity = 5.2;
+    jumpStrength = 80;
     spd = 10;
+    sprintMult = 2.5;
     FLOOR_z = -100;
     TRAP_MOUSE = true;
-
+    smoothedGroundZ = 500;
   }
 
 
@@ -40,24 +42,28 @@ class Camera
 
     float currentGround = map1.getGroundHeight(camX, camY);
     float targetZ = currentGround + 50;
-    
 
-    
-    
+    smoothedGroundZ = lerp(smoothedGroundZ, targetZ, 0.2);
+
+
     velocityZ -= gravity;
     camZ += velocityZ;
-    
-    if(camZ < targetZ) {
-        camZ = targetZ;
-        if (velocityZ < 0) velocityZ = 0;
+
+    if (camZ < targetZ) {
+      camZ = targetZ;
+      if (velocityZ < 0) velocityZ = 0;
     }
 
- 
+    boolean onGround = camZ <= smoothedGroundZ + 2;
+    if (onGround) {
+      camZ = lerp(camZ, targetZ, 0.4);
+      velocityZ = 0;
+    }
 
-    
-   
-      
-    
+
+
+
+
 
     if (camZ <= FLOOR_z)
     {
@@ -78,34 +84,32 @@ class Camera
     }
     float fx = cos (yaw);
     float fy = sin (yaw);
+    float currentSpd = sh ? spd * sprintMult : spd;
     if (w)
     {
-      camX += fx * spd;
-      camY += fy * spd;
+      camX += fx * currentSpd;
+      camY += fy * currentSpd;
     }
     if (s)
     {
-      camX -= fx * spd;
-      camY -= fy * spd;
+      camX -= fx * currentSpd;
+      camY -= fy * currentSpd;
     }
     if (a)
     {
-      camX += cos (yaw - HALF_PI) * spd;
-      camY += sin (yaw - HALF_PI) * spd;
+      camX += cos (yaw - HALF_PI) * currentSpd;
+      camY += sin (yaw - HALF_PI) * currentSpd;
     }
     if (d)
     {
-      camX += cos (yaw + HALF_PI) * spd;
-      camY += sin (yaw + HALF_PI) * spd;
+      camX += cos (yaw + HALF_PI) * currentSpd;
+      camY += sin (yaw + HALF_PI) * currentSpd;
     }
     if (sp && camZ <= targetZ + 1)
     {
       velocityZ = jumpStrength;
     }
-   
 
-    if (sh)
-      camZ -= spd;
 
     float lookX = camX + cos (yaw) * cos (pitch) * 100;
     float lookY = camY + sin (yaw) * cos (pitch) * 100;
