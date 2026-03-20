@@ -20,16 +20,16 @@ void drawCrosshair(boolean RedOrNot) {
 void drawCoord() {
   hint(DISABLE_DEPTH_TEST);
   fill(255);
-  textSize(20);
+  textSize(40);
   textAlign(LEFT);
-  text("XYZ: " + (int)playerCamera.camX + ", " + (int)playerCamera.camY + ", " + (int)playerCamera.camZ, 20, 30);
+  text("XYZ: " + (int)playerCamera.camX + ", " + (int)playerCamera.camY + ", " + (int)playerCamera.camZ, 20, 50);
 
   int displayYaw = (int)degrees(playerCamera.yaw)% 360;
   if (displayYaw < 0) displayYaw += 360;
-  text("Pitch-Yaw: " + (int)degrees(-playerCamera.pitch) + ", " + displayYaw, 20, 80);
-  text("'V'  to unlock mouse", 20, 130);
-  text("Current Seed: " + currentSeed, 20, 160);
-  text("Press 'N' for New Seed", 20, 190);
-  text("Press 'R' to Reload", 20, 220);
+  text("Pitch-Yaw: " + (int)degrees(-playerCamera.pitch) + ", " + displayYaw, 20, 100);
+  text("'V'  to unlock mouse", 20, 150);
+  text("Current Seed: " + currentSeed, 20, 200);
+  text("Press 'N' for New Seed", 20, 250);
+  text("Press 'R' to Reload", 20, 300);
   hint(ENABLE_DEPTH_TEST);
 }
